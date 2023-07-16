@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>模型設定</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+    <div style="text-align: center;">
+        <label for="urn">輸入模型 URN：</label>
+        <input type="text" id="urn" name="urn"><br>
+
+        <label for="mode">選擇遊覽模式：</label>
+        <select id="mode" name="mode">
+            <option value="設備清單設定模式">設備清單設定模式</option>
+            <option value="設備清單檢視模式">設備清單檢視模式</option>
+            <option value="設備引導模式">設備引導模式</option>
+        </select><br>
+
+        <button onclick="submitForm()">提交</button>
+    </div>
+
+    <script>
+        function submitForm() {
+            const urn = document.getElementById('urn').value;
+            const mode = document.getElementById('mode').value;
+
+            let targetView;
+            switch (mode) {
+                case '設備清單設定模式':
+                    targetView = '1';
+                    break;
+                case '設備清單檢視模式':
+                    targetView = '2';
+                    break;
+                case '設備引導模式':
+                    targetView = '3';
+                    break;
+                default:
+                    console.log('選擇的模式不正確');
+                    return;
+            }
+
+            const targetUrl = `./viewer/${targetView}?urn=${urn}`;
+            console.log(`將導向的 URL 為: ${targetUrl}`);
+            window.location.href = targetUrl;
+        }
+    </script>
+</body>
+</html>

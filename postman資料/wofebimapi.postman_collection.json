@@ -1,0 +1,285 @@
+{
+	"info": {
+		"_postman_id": "6f8212e8-9e8e-49ac-aa16-c0823902e6e5",
+		"name": "wofebimapi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13415879"
+	},
+	"item": [
+		{
+			"name": "雲端SVF網址取得",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Application-Encoding",
+						"value": "apllication/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://asia-northeast1-dynamicewofe.cloudfunctions.net/wofebimapi/getSvf?gId=eto3PQkxP9pHxJvL58qT&&wId=b4bXKGcoFttuBhAsI0Ce",
+					"protocol": "https",
+					"host": [
+						"asia-northeast1-dynamicewofe",
+						"cloudfunctions",
+						"net"
+					],
+					"path": [
+						"wofebimapi",
+						"getSvf"
+					],
+					"query": [
+						{
+							"key": "gId",
+							"value": "eto3PQkxP9pHxJvL58qT"
+						},
+						{
+							"key": null,
+							"value": null
+						},
+						{
+							"key": "wId",
+							"value": "b4bXKGcoFttuBhAsI0Ce"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "取得棟別樓層",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Application-Encoding",
+						"value": "apllication/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://asia-northeast1-dynamicewofe.cloudfunctions.net/wofebimapi/getbuildingList?gId=eto3PQkxP9pHxJvL58qT&&wId=b4bXKGcoFttuBhAsI0Ce",
+					"protocol": "https",
+					"host": [
+						"asia-northeast1-dynamicewofe",
+						"cloudfunctions",
+						"net"
+					],
+					"path": [
+						"wofebimapi",
+						"getbuildingList"
+					],
+					"query": [
+						{
+							"key": "gId",
+							"value": "eto3PQkxP9pHxJvL58qT"
+						},
+						{
+							"key": null,
+							"value": null
+						},
+						{
+							"key": "wId",
+							"value": "b4bXKGcoFttuBhAsI0Ce"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "取得房間空間清單",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"building\": \"F14\",\r\n    \"floor\": \"1FL\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://asia-northeast1-dynamicewofe.cloudfunctions.net/wofebimapi/getRoomList?gId=eto3PQkxP9pHxJvL58qT&&wId=b4bXKGcoFttuBhAsI0Ce",
+					"protocol": "https",
+					"host": [
+						"asia-northeast1-dynamicewofe",
+						"cloudfunctions",
+						"net"
+					],
+					"path": [
+						"wofebimapi",
+						"getRoomList"
+					],
+					"query": [
+						{
+							"key": "gId",
+							"value": "eto3PQkxP9pHxJvL58qT"
+						},
+						{
+							"key": null,
+							"value": null
+						},
+						{
+							"key": "wId",
+							"value": "b4bXKGcoFttuBhAsI0Ce"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "取得設備清單",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"building\": \"F14\",\r\n    \"floor\": \"1FL\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://asia-northeast1-dynamicewofe.cloudfunctions.net/wofebimapi/getDeviceList?gId=eto3PQkxP9pHxJvL58qT&&wId=b4bXKGcoFttuBhAsI0Ce",
+					"protocol": "https",
+					"host": [
+						"asia-northeast1-dynamicewofe",
+						"cloudfunctions",
+						"net"
+					],
+					"path": [
+						"wofebimapi",
+						"getDeviceList"
+					],
+					"query": [
+						{
+							"key": "gId",
+							"value": "eto3PQkxP9pHxJvL58qT"
+						},
+						{
+							"key": null,
+							"value": null
+						},
+						{
+							"key": "wId",
+							"value": "b4bXKGcoFttuBhAsI0Ce"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增/編輯/重設 空間資訊",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"building\": \"F14\",\r\n    \"floor\": \"1FL\",\r\n    \"room\":\"公共廁所\",\r\n    \"tag\": \"123222\",\r\n    \"position\": \"1,11,31\"\r\n}"
+				},
+				"url": {
+					"raw": "https://asia-northeast1-dynamicewofe.cloudfunctions.net/wofebimapi/updateRoomPos?gId=eto3PQkxP9pHxJvL58qT&&wId=b4bXKGcoFttuBhAsI0Ce",
+					"protocol": "https",
+					"host": [
+						"asia-northeast1-dynamicewofe",
+						"cloudfunctions",
+						"net"
+					],
+					"path": [
+						"wofebimapi",
+						"updateRoomPos"
+					],
+					"query": [
+						{
+							"key": "gId",
+							"value": "eto3PQkxP9pHxJvL58qT"
+						},
+						{
+							"key": null,
+							"value": null
+						},
+						{
+							"key": "wId",
+							"value": "b4bXKGcoFttuBhAsI0Ce"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增/編輯/重設 設備資訊",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"deviceId\":\"pRWFXsDMSGgUGMK2RUWy\",\r\n    \"tag\": \"122\",\r\n    \"position\": \"1,121,31\"\r\n}"
+				},
+				"url": {
+					"raw": "https://asia-northeast1-dynamicewofe.cloudfunctions.net/wofebimapi/updateDevicePos?gId=eto3PQkxP9pHxJvL58qT&&wId=b4bXKGcoFttuBhAsI0Ce",
+					"protocol": "https",
+					"host": [
+						"asia-northeast1-dynamicewofe",
+						"cloudfunctions",
+						"net"
+					],
+					"path": [
+						"wofebimapi",
+						"updateDevicePos"
+					],
+					"query": [
+						{
+							"key": "gId",
+							"value": "eto3PQkxP9pHxJvL58qT"
+						},
+						{
+							"key": null,
+							"value": null
+						},
+						{
+							"key": "wId",
+							"value": "b4bXKGcoFttuBhAsI0Ce"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

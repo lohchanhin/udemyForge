@@ -10,19 +10,40 @@
         <input type="text" id="urn" name="urn"><br>
 
         <label for="mode">選擇遊覽模式：</label>
-        <select id="mode" name="mode">
+        <select id="mode" name="mode" onchange="handleModeChange()">
             <option value="設備清單設定模式">設備清單設定模式</option>
             <option value="設備清單檢視模式">設備清單檢視模式</option>
             <option value="設備引導模式">設備引導模式</option>
         </select><br>
 
+        <div id="properties-input" style="display: none;">
+            <label for="properties">Properties：</label>
+            <input type="text" id="properties" name="properties"><br>
+            <label for="value">Value：</label>
+            <input type="text" id="value" name="value"><br>
+        </div>
+
+        <div id="uid-input" style="display: none;">
+            <label for="uid">輸入設備uid：</label>
+            <input type="text" id="uid" name="uid"><br>
+        </div>
+
         <button onclick="submitForm()">提交</button>
     </div>
 
     <script>
+        function handleModeChange() {
+            const mode = document.getElementById('mode').value;
+            document.getElementById('properties-input').style.display = mode === '設備清單檢視模式' ? 'block' : 'none';
+            document.getElementById('uid-input').style.display = mode === '設備引導模式' ? 'block' : 'none';
+        }
+
         function submitForm() {
             const urn = document.getElementById('urn').value;
             const mode = document.getElementById('mode').value;
+            const properties = document.getElementById('properties').value;
+            const value = document.getElementById('value').value;
+            const uid = document.getElementById('uid').value;
 
             let targetView;
             switch (mode) {
@@ -40,7 +61,7 @@
                     return;
             }
 
-            const targetUrl = `./viewer/${targetView}?urn=${urn}`;
+            const targetUrl = `./viewer/${targetView}?urn=${urn}&properties=${properties}&value=${value}&uid=${uid}`;
             console.log(`將導向的 URL 為: ${targetUrl}`);
             window.location.href = targetUrl;
         }

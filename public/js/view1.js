@@ -13,7 +13,7 @@ viewer = new Autodesk.Viewing.Private.GuiViewer3D(myViewerDiv);
 // 配置 Autodesk viewer 的选项
 var options = {
     'env' : 'Local',
-    'document':'../shaver/0.svf'
+    'document':'../bimac/3D View/3d/3d.svf'
 };
 
 // 定义一个初始化 viewer 的函数
@@ -22,7 +22,14 @@ function initializeViewer() {
         // 初始化 viewer
         Autodesk.Viewing.Initializer(options, function() {
             // 启动 viewer 并解析 Promise
-            viewer.start(options.document, options, resolve);
+            viewer.start(options.document, options, function() {
+                // 添加选中事件监听器
+                // viewer.addEventListener(Autodesk.Viewing.AGGREGATE_SELECTION_CHANGED_EVENT, function(event) {
+                //     var dbIds = event.selections[0].dbIdArray; // Array of dbIds
+                //     console.log(dbIds); // Print out the dbIds in the console
+                // });
+                resolve();
+            });
         });
     });
 }
@@ -31,10 +38,11 @@ function initializeViewer() {
 async function startViewer() {
     // 等待 viewer 初始化完成
     await initializeViewer();
-    
+    // 加载 TransformationExtension
+    await viewer.loadExtension('TransformationExtension');
     // 加载 SceneBuilder 扩展
     const ext = await viewer.loadExtension('Autodesk.Viewing.SceneBuilder');
-
+    
     // 添加一个新模型
     ext.addNewModel({
         conserveMemory: false,
@@ -62,15 +70,3 @@ async function startViewer() {
 
 // 调用 startViewer 函数启动 viewer
 startViewer();
-
-// 监听按钮的点击事件的注释代码
-// document.getElementById('addGeometryButton').addEventListener('click', function() {
-//     if (viewer) {
-//         viewer.loadExtension('Autodesk.Viewing.SceneBuilder').then(function(sceneBuilderExtension) {
-//             const modelBuilder = sceneBuilderExtension.addNewModel({ conserveMemory: false });
-//             addGeometryV1(modelBuilder, 123456);
-//             viewer.invalidate(true, true, true);
-//             viewer.fitToView([123456], modelBuilder.model);
-//         });
-//     }
-// });

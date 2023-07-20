@@ -1,9 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>設備引導模式</title>
+  <meta charset="UTF-8">
+  <title>設備引導模式</title>
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+  <!-- The Viewer JS & CSS-->
+  <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/style.min.css?v=v7.*" type="text/css">
+  
+  <style>
+    #add-geom {
+        position: absolute;  /* 必須將 position 設置為除 static 以外的其他值，z-index 才會生效 */
+        top: 20px;
+        left: 20px;
+        z-index: 9999;  /* 將 z-index 設置為一個很大的數值 */
+    }
+    </style>
+    <!-- The Viewer JS -->
+    <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Utils JS -->
+    <script src="https://forgist.autodesk.io/client/utils.js"></script>
+
 </head>
+
 <body>
-    <h1 style="text-align: center;">3</h1>
+  <!-- 添加按鈕 -->
+  <!-- <button id="addGeometryButton" >Add Geometry</button> -->
+  <!-- <img src='/images/forge-logo.png' style="height:auto;width:20%;position:absolute;left:10px;top:10px;z-index:233"> -->
+  <div id="MyViewerDiv"></div>
+
+  <!-- Developer JS -->
+   <script src="../js/view3.js"></script>
 </body>
+
 </html>

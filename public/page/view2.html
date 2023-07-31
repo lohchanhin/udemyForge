@@ -1,9 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>設備清單檢視模式</title>
+  <meta charset="UTF-8">
+  <title>設備清單檢視模式</title>
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/style.min.css?v=v7.*" type="text/css">
+  <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.0.0/viewer3D.min.js"></script>
+  <link rel="stylesheet" href="../css/view2.css" type="text/css">
 </head>
+
 <body>
-    <h1 style="text-align: center;">2</h1>
+  <div id="MyViewerDiv"></div>
+  <div id="controls">
+    <h3 style="text-align: center;"  >Floors</h3>
+    <div id="floors"></div>
+  </div>
+  <script src="../js/view2.js"></script>
 </body>
 </html>

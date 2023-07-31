@@ -9,12 +9,12 @@
   
   <style>
     #add-geom {
-        position: absolute;  /* 必須將 position 設置為除 static 以外的其他值，z-index 才會生效 */
-        top: 20px;
-        left: 20px;
-        z-index: 9999;  /* 將 z-index 設置為一個很大的數值 */
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1000;
     }
-    </style>
+</style>
     <!-- The Viewer JS -->
     <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js"></script>
 
@@ -24,18 +24,22 @@
     <!-- Utils JS -->
     <script src="https://forgist.autodesk.io/client/utils.js"></script>
 
-    <script src="http://cdn.jsdelivr.net/gh/autodesk-forge/forge-extensions/public/extensions/TransformationExtension/contents/main.js"></script> 
-
-  
-
-  </head>
-
+    <!-- 各種擴展 -->
+    <script src="../extension/TransformationExtension/main.js"></script> 
+    <script src="../extension/AddGeometry/main.js"></script>
+    
+    <script src="../extension/IconMarkupExtension/main.js"></script>
+    <link rel="stylesheet" href="../extension//IconMarkupExtension/style.css">
+    <!-- 各種css -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.7/themes/default/style.min.css">
+    
+</head>
 <body>
-  <!-- 添加按鈕 -->
-  <!-- <button id="addGeometryButton" >Add Geometry</button> -->
-  <!-- <img src='/images/forge-logo.png' style="height:auto;width:20%;position:absolute;left:10px;top:10px;z-index:233"> -->
+  <button id="add-geom">添加模型</button>
   <div id="MyViewerDiv"></div>
-
+  
   <!-- Developer JS -->
    <script src="../js/view1.js"></script>
 </body>

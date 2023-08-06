@@ -4,40 +4,68 @@
   <meta charset="UTF-8">
   <title>設備清單設定模式</title>
   <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
-  <!-- The Viewer JS & CSS-->
-  <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/style.min.css?v=v7.*" type="text/css">
-  
   <style>
-    #add-geom {
+    #control-panel {
         position: absolute;
-        top: 10px;
-        left: 10px;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        margin: 1rem;
+        padding: 1rem;
+        border: 1px solid;
         z-index: 1000;
     }
-</style>
-    <!-- The Viewer JS -->
-    <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js"></script>
 
-    <!-- jQuery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    #control-panel label,
+    #control-panel input {
+        margin-bottom: 2px;
+    }
+  </style>
 
-    <!-- Utils JS -->
-    <script src="https://forgist.autodesk.io/client/utils.js"></script>
 
-    <!-- 各種擴展 -->
-    <script src="../extension/TransformationExtension/main.js"></script> 
-    <script src="../extension/AddGeometry/main.js"></script>
-    
-    <script src="../extension/IconMarkupExtension/main.js"></script>
-    <link rel="stylesheet" href="../extension//IconMarkupExtension/style.css">
-    <!-- 各種css -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.7/themes/default/style.min.css">
+  <!-- The Viewer JS & CSS-->
+  <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/style.min.css?v=v7.*" type="text/css">
+
+
+  <!-- The Viewer JS -->
+  <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js"></script>
+
+  <!-- jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <!-- Utils JS -->
+  <script src="https://forgist.autodesk.io/client/utils.js"></script>
+
+  <!-- 各種擴展 -->
+  <script src="../extension/TransformationExtension/main.js"></script> 
+  <script src="../extension/AddGeometry/main.js"></script>
+  <script src="../extension/IconMarkupExtension/main.js"></script>
+  <link rel="stylesheet" href="../extension//IconMarkupExtension/style.css">
+  
+  <!-- 各種css -->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.7/themes/default/style.min.css">
     
 </head>
 <body>
-  <button id="add-geom">添加模型</button>
+  <div id="control-panel">
+    <button id="add-geom" style="margin: 1rem;">添加模型</button><br>
+    <label for="x">X: </label><input type="number" id="x" name="x" step="0.01"><br>
+    <label for="y">Y: </label><input type="number" id="y" name="y" step="0.01"><br>
+    <label for="z">Z: </label><input type="number" id="z" name="z" step="0.01"><br>
+  </div>
+  
+  
+  <div style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);z-index: 1000;margin: 2rem;border-style: solid;padding: 1rem;">
+    <label for="dbid-input">DBID:</label><br>
+    <input type="text" id="dbid-input" name="dbid-input"><br>
+    <label for="markup-content-input">標記內容:</label><br>
+    <input type="text" id="markup-content-input" name="markup-content-input"><br>
+    <button id="add-icon-button">確定</button>
+</div>
+
+
   <div id="MyViewerDiv"></div>
   
   <!-- Developer JS -->

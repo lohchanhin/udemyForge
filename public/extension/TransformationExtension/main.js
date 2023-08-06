@@ -65,71 +65,82 @@ Autodesk.ADN.Viewing.Extension.TransformTool =  function (viewer, options) {
         }
 
        
+        // 當項目被選擇時觸發的函數
         function onItemSelected(event) {
 
+            // 初始化_selectedFragProxyMap，此地圖用於儲存選擇的片段
             _selectedFragProxyMap = {};
 
-            //component unselected
 
+            // 如果沒有選擇的片段，則清理環境並返回
             if(!event.fragIdsArray.length) {
 
+                // 清除選擇點
                 _hitPoint = null;
 
+                // 隱藏轉換控制器
                 _transformControlTx.visible = false;
 
-                _transformControlTx.removeEventListener(
-                    'change', onTxChange);
+                // 移除轉換控制器的變更事件監聽器
+                _transformControlTx.removeEventListener('change', onTxChange);
 
-                viewer.removeEventListener(
-                    Autodesk.Viewing.CAMERA_CHANGE_EVENT,
-                    onCameraChanged);
+                // 移除觀看器的攝像機變更事件監聽器
+                viewer.removeEventListener(Autodesk.Viewing.CAMERA_CHANGE_EVENT, onCameraChanged);
 
+                // 由於沒有選擇的片段，函數此處返回
                 return;
             }
 
-
+            // 如果有選擇點
             if(_hitPoint) {
 
+                // 顯示轉換控制器
                 _transformControlTx.visible = true;
 
+                // 將轉換控制器的位置設置為選擇點的位置
                 _transformControlTx.setPosition(_hitPoint);
 
-                _transformControlTx.addEventListener(
-                    'change', onTxChange);
+                // 為轉換控制器添加變更事件監聽器
+                _transformControlTx.addEventListener('change', onTxChange);
 
-                viewer.addEventListener(
-                    Autodesk.Viewing.CAMERA_CHANGE_EVENT,
-                    onCameraChanged);
+                // 為觀看器添加攝像機變更事件監聽器
+                viewer.addEventListener(Autodesk.Viewing.CAMERA_CHANGE_EVENT, onCameraChanged);
 
+                // 遍歷所有選擇的片段
                 event.fragIdsArray.forEach(function (fragId) {
 
-                    var fragProxy = viewer.impl.getFragmentProxy(
-                        viewer.model,
-                        fragId);
-
+                    // 獲取每個片段的代理
+                    var fragProxy = viewer.impl.getFragmentProxy(viewer.model, fragId);
+                   
+                    // 獲取片段的動畫變換
                     fragProxy.getAnimTransform();
 
+                    // 計算選擇點與片段位置之間的偏移量
                     var offset = {
-
                         x: _hitPoint.x - fragProxy.position.x,
                         y: _hitPoint.y - fragProxy.position.y,
                         z: _hitPoint.z - fragProxy.position.z
                     };
 
+                    // 將計算出的偏移量設置給片段代理
                     fragProxy.offset = offset;
 
+                    // 將片段代理儲存到_selectedFragProxyMap
                     _selectedFragProxyMap[fragId] = fragProxy;
 
+                    // 在_modifiedFragIdMap中為此片段ID創建一個新的對象
                     _modifiedFragIdMap[fragId] = {};
                 });
 
+                // 清除選擇點
                 _hitPoint = null;
             }
+            // 如果沒有選擇點，則隱藏轉換控制器
             else {
-
                 _transformControlTx.visible = false;
             }
         }
+
 
       
         function normalize(screenPoint) {
@@ -224,6 +235,8 @@ Autodesk.ADN.Viewing.Extension.TransformTool =  function (viewer, options) {
             viewer.addEventListener(
                 Autodesk.Viewing.SELECTION_CHANGED_EVENT,
                 onItemSelected);
+
+                
         };
 
         
@@ -398,6 +411,7 @@ Autodesk.ADN.Viewing.Extension.TransformTool =  function (viewer, options) {
                 viewer.toolController.deactivateTool(_self.tool.getName());
                 this._button.setState(Autodesk.Viewing.UI.Button.State.INACTIVE);
             }
+
         };
         this._button.setToolTip('Transform Object');
         this._group.addControl(this._button);

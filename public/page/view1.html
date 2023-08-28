@@ -20,6 +20,34 @@
     #control-panel input {
         margin-bottom: 2px;
     }
+
+    #deviceLabels {
+        margin-top: 20px;  
+        max-height: 300px; /* 例如，設定最大高度為300像素，您可以根據需要更改此值 */
+        overflow-y: auto;  /* 若內容超過設定的最大高度時，就可以垂直滾動 */
+    }
+
+
+    .device-card {
+        background-color: #f7f7f7; /* 灰色背景 */
+        border-radius: 5px; /* 圆角边框 */
+        padding: 10px;  /* 内边距 */
+        margin-bottom: 10px;  /* 与下一个卡片之间的间隔 */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  /* 一些阴影效果 */
+    }
+
+    .device-card label {
+        font-size: 16px;  /* 更大的字体 */
+        color: #333;
+        margin-right: 10px;  /* 使标签之间有一些间隔 */
+        padding: 1rem;  /* 添加填充 */
+        border: 2px solid black;  /* 添加边框 */
+        border-radius: 4px;  /* 为边框添加一些圆角 */
+        display: inline-block;  /* 使得padding和border可以正常显示 */
+        margin-bottom: 10px;  /* 每个标签之间的间隔 */
+    }
+
+
   </style>
 
 
@@ -37,8 +65,7 @@
   <script src="https://forgist.autodesk.io/client/utils.js"></script>
 
   <!-- 各種擴展 -->
-  <script src="../extension/TransformationExtension/main.js"></script> 
-  <script src="../extension/AddGeometry/main.js"></script>
+  <script src="../js/view02/move.js"></script> 
   <script src="../extension/IconMarkupExtension/main.js"></script>
   <link rel="stylesheet" href="../extension//IconMarkupExtension/style.css">
   
@@ -46,7 +73,7 @@
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.7/themes/default/style.min.css">
-    
+    <link rel="stylesheet" href="../css/view2.css">
 </head>
 <body>
   <div id="control-panel">
@@ -57,7 +84,7 @@
   </div>
   
   
-  <div style="position: absolute; right: 0; top: 50%; transform: translateY(-50%);z-index: 1000;margin: 2rem;border-style: solid;padding: 1rem;">
+  <div style="position: absolute; right: 30%; top: 50%; transform: translateY(-50%);z-index: 1000;margin: 2rem;border-style: solid;padding: 1rem;">
     <label for="dbid-input">DBID:</label><br>
     <input type="text" id="dbid-input" name="dbid-input"><br>
     <label for="markup-content-input">標記內容:</label><br>
@@ -66,10 +93,37 @@
 </div>
 
 
-  <div id="MyViewerDiv"></div>
+    <div id="MyViewerDiv" ></div>
+    <div id="controls" style="position: absolute; right: 0%; z-index: 1001;">
+      <div style="display: block;">
+        <label for="buildingListDropdown">Building List:</label>
+        <select id="buildingListDropdown" name="buildingListDropdown"></select><br><br>
+        
+        <label for="roomListDropdown">Room List:</label>
+        <select id="roomListDropdown" name="roomListDropdown"></select><br><br>
+    
+        <button id="searchButton">Device List</button>
+        <div id="deviceLabels"></div>  <!-- 这里是新添加的div -->
+      </div>
+    </div>
+    
+</div>
+
+
+      
+      <!-- <h3 style="text-align: center;"  >Floors</h3> -->
+      <div id="floors"></div>
+    </div>
+
+
   
   <!-- Developer JS -->
-   <script src="../js/view1.js"></script>
+    <script src="../js/view02/setup.js"></script>
+    <script src="../js/view02/extension.js"></script>
+    <script src="../js/view02/addModel.js"></script>
+    <script src="../js/view02/addIcon.js"></script>
+    <script src="../js/view02/dropdownLogic.js"></script>
+    <script src="../js/newView1.js"></script>
 </body>
 
 </html>

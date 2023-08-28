@@ -16,6 +16,9 @@ function addGeometryV1(modelBuilder, dbId) {
   );
   Mesh.dbId = dbId;
   modelBuilder.addMesh(Mesh);
+  Mesh.position.set(x,y,z);
+  Mesh.updateMatrix();
+  modelBuilder.updateMesh(Mesh)
   return Mesh;
 }
   

@@ -124,7 +124,7 @@ Autodesk.ADN.Viewing.Extension.TransformTool =  function (viewer, options) {
 
                     // 將計算出的偏移量設置給片段代理
                     fragProxy.offset = offset;
-
+                    console.log
                     // 將片段代理儲存到_selectedFragProxyMap
                     _selectedFragProxyMap[fragId] = fragProxy;
 
@@ -206,7 +206,7 @@ Autodesk.ADN.Viewing.Extension.TransformTool =  function (viewer, options) {
 
        
         this.activate = function() {
-
+            console.log("激活")
             viewer.select([]);
 
             var bbox = viewer.model.getBoundingBox();
@@ -241,7 +241,7 @@ Autodesk.ADN.Viewing.Extension.TransformTool =  function (viewer, options) {
 
         
         this.deactivate = function() {
-
+            console.log('取消')
             viewer.impl.removeOverlay(
                 'Dotty.Viewing.Tool.TransformTool',
                 _transformControlTx);
@@ -310,7 +310,7 @@ Autodesk.ADN.Viewing.Extension.TransformTool =  function (viewer, options) {
 
        
         this.handleButtonDown = function(event, button) {
-
+            console.log('按下去')
             _hitPoint = getHitPoint(event);
 
             _isDragging = true;
@@ -327,7 +327,7 @@ Autodesk.ADN.Viewing.Extension.TransformTool =  function (viewer, options) {
         //
         ///////////////////////////////////////////////////////////////////////////
         this.handleButtonUp = function(event, button) {
-
+            console.log("鬆開")
             _isDragging = false;
 
             if (_transformControlTx.onPointerUp(event))
@@ -336,13 +336,9 @@ Autodesk.ADN.Viewing.Extension.TransformTool =  function (viewer, options) {
             //return _transRotControl.onPointerUp(event);
             return false;
         };
-
         
-        //
-        //
-        ///////////////////////////////////////////////////////////////////////////
         this.handleMouseMove = function(event) {
-
+            console.log('滑鼠移動')
             if (_isDragging) {
 
                 if (_transformControlTx.onPointerMove(event) ) {

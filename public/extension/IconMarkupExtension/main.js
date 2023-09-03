@@ -73,96 +73,141 @@ class IconMarkupExtension extends Autodesk.Viewing.Extension {
 
     showIcons(show) {
         const $viewer = $('#' + this.viewer.clientContainer.id + ' div.adsk-viewing-viewer');
+        console.log("Entered showIcons function");
     
         // remove previous...
         $('#' + this.viewer.clientContainer.id + ' div.adsk-viewing-viewer label.markup').remove();
-        if (!show) return;
+        if (!show) {
+            console.log("Show is set to false, exiting function");
+            return;
+        }
     
         // do we have anything to show?
-        if (this._icons === undefined || this.icons === null) return;
+        if (this._icons === undefined || this.icons === null) {
+            console.log("No icons to show, exiting function");
+            return;
+        }
     
         // do we have access to the instance tree?
         const tree = this.viewer.model.getInstanceTree();
-        if (tree === undefined) { console.log('Loading tree...'); return; }
+        if (tree === undefined) {
+            console.log('Loading tree...'); 
+            return; 
+        }
     
         const onClick = (e) => {
+            console.log("Label clicked, with dbId:", $(e.currentTarget).data('id'));
             this.viewer.select($(e.currentTarget).data('id'));
             this.viewer.utilities.fitToView();
         };
     
         this._frags = {}
         for (var i = 0; i < this._icons.length; i++) {
-            // we need to collect all the fragIds for a given dbId
+            console.log(`Processing icon ${i} with dbId: ${this._icons[i].dbId}`);
+            
             const icon = this._icons[i];
             this._frags['dbId' + icon.dbId] = []
-    
-            // create the label for the dbId
+            
             const $label = $(`
             <label class="markup update" data-id="${icon.dbId}">
                 <i class="fa-solid fa-marker ${icon.css}"></i> ${icon.label || ''}
             </label>
             `);
+    
             $label.css('display', this.viewer.isNodeVisible(icon.dbId) ? 'block' : 'none');
             $label.on('click', this.options.onClick || onClick);
             $viewer.append($label);
     
-            // now collect the fragIds
             const getChildren = (topParentId, dbId) => {
+                console.log(`Getting children for topParentId: ${topParentId} and dbId: ${dbId}`);
                 if (tree.getChildCount(dbId) === 0)
-                    getFrags(topParentId, dbId); // get frags for this leaf child
+                    getFrags(topParentId, dbId);
                 tree.enumNodeChildren(dbId, (childId) => {
                     getChildren(topParentId, childId);
                 })
             }
+    
             const getFrags = (topParentId, dbId) => {
-                tree.enumNodeFragments(dbId, (fragId) => {
+                console.log(`Getting frags for topParentId: ${topParentId} and dbId: ${dbId}`);
+                
+                let foundFrag = tree.enumNodeFragments(dbId);
+                
+                console.log(foundFrag)
+
+                tree.enumNodeFragments(dbId, (fragId) => {                    
+                    console.log(`Found fragId: ${fragId} for dbId: ${dbId}`);
                     this._frags['dbId' + topParentId].push(fragId);
-                    this.updateIcons(); // re-position for each fragId found
+                    this.updateIcons();
                 });
+            
+                
+                
+               
+                
+                if (foundFrag == null) {
+                    console.log('聚合模型調整位置');
+                
+                    const mesh = MeshDictionary[dbId];
+                    console.log(mesh);
+                    console.log(mesh.position);
+                    
+                    if (mesh && mesh.position) {
+                        const position = mesh.position;
+                
+                        // Set icon position to the aggregate model's x and y coordinates
+                        const $label = $(`label[data-id="${topParentId}"]`);
+                        $label.css({
+                            'left': position.x + 'px',
+                            'top': position.y + 'px'
+                        });
+                    }
+                
+                    // Using the updateIcons method after setting the position
+                    this.updateIcons();
+                }
+                
+                
             }
+            
+    
             getChildren(icon.dbId, icon.dbId);
         }
     }
     
+    
     getModifiedWorldBoundingBox(dbId) {
         var fragList = this.viewer.model.getFragmentList();
-        const nodebBox = new THREE.Box3()
-
-        // for each fragId on the list, get the bounding box
+        const nodebBox = new THREE.Box3();
+    
+        // 為每個fragId獲取邊界框
         for (const fragId of this._frags['dbId' + dbId]) {
             const fragbBox = new THREE.Box3();
             fragList.getWorldBounds(fragId, fragbBox);
-            nodebBox.union(fragbBox); // create a unifed bounding box
+            nodebBox.union(fragbBox); 
         }
-
-        return nodebBox
-    }
-
-
-    // 針對每個需要顯示圖標的元素，獲取它們的邊界框，然後計算出中心點的位置
-    getModifiedWorldBoundingBox(dbId) {
-        var fragList = this.viewer.model.getFragmentList();
-        const nodebBox = new THREE.Box3()
-
-        // for each fragId on the list, get the bounding box
-        for (const fragId of this._frags['dbId' + dbId]) {
-            const fragbBox = new THREE.Box3();
-            fragList.getWorldBounds(fragId, fragbBox);
-            nodebBox.union(fragbBox); // create a unifed bounding box
+    
+        // 檢查MeshDictionary以獲取聚合模型的邊界框
+        if (MeshDictionary[dbId]) {
+            const aggregateMesh = MeshDictionary[dbId];
+            const meshBox = new THREE.Box3().setFromObject(aggregateMesh);
+            nodebBox.union(meshBox);
         }
+    
+        return nodebBox;
+    }   
+    
 
-        return nodebBox
-    }
+
 
     // 根據元素的位置更新圖標的位置
     updateIcons() {
         for (const label of $('#' + this.viewer.clientContainer.id + ' div.adsk-viewing-viewer .update')) {
             const $label = $(label);
             const id = $label.data('id');
-
+            console.log($label)
             // get the center of the dbId (based on its fragIds bounding boxes)
             const pos = this.viewer.worldToClient(this.getModifiedWorldBoundingBox(id).center());
-
+            console.log(pos);
             // position the label center to it
             $label.css('left', Math.floor(pos.x - $label[0].offsetWidth / 2) + 'px');
             $label.css('top', Math.floor(pos.y - $label[0].offsetHeight / 2) + 'px');

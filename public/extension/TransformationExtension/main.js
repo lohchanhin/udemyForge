@@ -124,7 +124,7 @@ Autodesk.ADN.Viewing.Extension.TransformTool =  function (viewer, options) {
 
                     // 將計算出的偏移量設置給片段代理
                     fragProxy.offset = offset;
-                    console.log
+                    
                     // 將片段代理儲存到_selectedFragProxyMap
                     _selectedFragProxyMap[fragId] = fragProxy;
 

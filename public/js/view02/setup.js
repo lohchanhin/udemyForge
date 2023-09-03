@@ -9,6 +9,12 @@ async function initializeViewer(options, myViewerDiv,panelValues,modelPositions)
             Autodesk.Viewing.SELECTION_CHANGED_EVENT,
             async (event) => {
               初始化event(event,panelValues,modelPositions);
+
+              viewer.getProperties(await viewer.getSelection(), data => {
+                targetExternalId = data.externalId;
+                console.log("Target ExternalId: ", targetExternalId);
+            });
+            
             }
           );
         });       
@@ -95,7 +101,7 @@ async function initializeViewer(options, myViewerDiv,panelValues,modelPositions)
   
       
       更新位置(model, id, fragIds[0],panelValues,modelPositions);
-  
+      
      
     }
   }

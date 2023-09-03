@@ -30,77 +30,64 @@ Autodesk.ADN.Viewing.Extension.TransformTool = function (viewer, options) {
       return sphere;
     }
 
-    function onTxChange() {
-      for (var fragId in _selectedFragProxyMap) {
-        var fragProxy = _selectedFragProxyMap[fragId];
+    //   function onTxChange() {
 
-        //目標位置是三維的位置減去自己的初始位置，
-        const targetWorldPosition = new THREE.Vector3(
+    //     for(var fragId in _selectedFragProxyMap) {
+
+    //         var fragProxy = _selectedFragProxyMap[fragId];
+
+    //         var position = new THREE.Vector3(
+    //             _transformMesh.position.x - fragProxy.offset.x,
+    //             _transformMesh.position.y - fragProxy.offset.y,
+    //             _transformMesh.position.z - fragProxy.offset.z);
+
+    //         fragProxy.position = position;
+
+    //         fragProxy.updateAnimTransform();
+    //     }
+
+    //     viewer.impl.sceneUpdated(true);
+    // }
+
+    function onTxChange2() {
+      if (selectedMesh != null) {
+        selectedMesh.position.set(
           _transformMesh.position.x,
           _transformMesh.position.y,
           _transformMesh.position.z
         );
-
-        // //取得世界坐標
-        const worldMatrix = new THREE.Matrix4();
-        fragProxy.getWorldMatrix(worldMatrix);
-
-        // //取得現在世界坐標
-        const currentWorldPosition = new THREE.Vector3();
-        currentWorldPosition.setFromMatrixPosition(worldMatrix);
-
-        // //計算目標世界坐標和現在世界坐標的差距
-        const translation = targetWorldPosition
-          .clone()
-          .sub(currentWorldPosition);
-
-        fragProxy.position.add(translation);
-        fragProxy.updateAnimTransform();
+        selectedMesh.matrixAutoUpdate = true;
+        selectedMesh.updateMatrix();
+        modelBuilder.updateMesh(selectedMesh);
+        selectedMesh.offset = _transformMesh.position;
+        //載入數值即可
+        document.getElementById("x").value = selectedMesh.position.x.toFixed(2);
+        document.getElementById("y").value = selectedMesh.position.y.toFixed(2);
+        document.getElementById("z").value = selectedMesh.position.z.toFixed(2);
+        //console.log(selectedMesh.offset);
+      } else {
+        // for (var fragId in _selectedFragProxyMap) {
+        //     var fragProxy = _selectedFragProxyMap[fragId];
+        //     //目標位置是三維的位置減去自己的初始位置，
+        //     const targetWorldPosition = new THREE.Vector3(
+        //       _transformMesh.position.x,
+        //       _transformMesh.position.y,
+        //       _transformMesh.position.z
+        //     );
+        //     // //取得世界坐標
+        //     const worldMatrix = new THREE.Matrix4();
+        //     fragProxy.getWorldMatrix(worldMatrix);
+        //     // //取得現在世界坐標
+        //     const currentWorldPosition = new THREE.Vector3();
+        //     currentWorldPosition.setFromMatrixPosition(worldMatrix);
+        //     // //計算目標世界坐標和現在世界坐標的差距
+        //     const translation = targetWorldPosition
+        //       .clone()
+        //       .sub(currentWorldPosition);
+        //     fragProxy.position.add(translation);
+        //     fragProxy.updateAnimTransform();
+        //   }
       }
-
-      viewer.impl.sceneUpdated(true);
-    }
-
-    function onTxChange2() {
-
-        if(selectedMesh!=null){
-            selectedMesh.position.set(_transformMesh.position.x,_transformMesh.position.y,_transformMesh.position.z)
-
-            selectedMesh.matrixAutoUpdate = true;
-            selectedMesh.updateMatrix();
-
-            modelBuilder.updateMesh(selectedMesh);
-            selectedMesh.offset = _transformMesh.position;
-        }else{
-            for (var fragId in _selectedFragProxyMap) {
-                var fragProxy = _selectedFragProxyMap[fragId];
-        
-                //目標位置是三維的位置減去自己的初始位置，
-                const targetWorldPosition = new THREE.Vector3(
-                  _transformMesh.position.x,
-                  _transformMesh.position.y,
-                  _transformMesh.position.z
-                );
-        
-                // //取得世界坐標
-                const worldMatrix = new THREE.Matrix4();
-                fragProxy.getWorldMatrix(worldMatrix);
-        
-                // //取得現在世界坐標
-                const currentWorldPosition = new THREE.Vector3();
-                currentWorldPosition.setFromMatrixPosition(worldMatrix);
-        
-                // //計算目標世界坐標和現在世界坐標的差距
-                const translation = targetWorldPosition
-                  .clone()
-                  .sub(currentWorldPosition);
-        
-                fragProxy.position.add(translation);
-                fragProxy.updateAnimTransform();
-              }
-        }
-      
-
       viewer.impl.sceneUpdated(true);
     }
 
@@ -110,165 +97,100 @@ Autodesk.ADN.Viewing.Extension.TransformTool = function (viewer, options) {
       }
     }
 
-    // 當項目被選擇時觸發的函數
-    function onItemSelected(event) {
-      // 初始化_selectedFragProxyMap，此地圖用於儲存選擇的片段
-      _selectedFragProxyMap = {};
+    //   function onItemSelected(event) {
 
-      // 如果沒有選擇的片段，則清理環境並返回
-      if (!event.fragIdsArray.length) {
-        // 清除選擇點
-        _hitPoint = null;
+    //     _selectedFragProxyMap = {};
 
-        // 隱藏轉換控制器
-        _transformControlTx.visible = false;
+    //     //component unselected
 
-        // 移除轉換控制器的變更事件監聽器
-        _transformControlTx.removeEventListener("change", onTxChange);
+    //     if(!event.fragIdsArray.length) {
 
-        // 移除觀看器的攝像機變更事件監聽器
-        viewer.removeEventListener(
-          Autodesk.Viewing.CAMERA_CHANGE_EVENT,
-          onCameraChanged
-        );
+    //         _hitPoint = null;
 
-        // 由於沒有選擇的片段，函數此處返回
-        return;
-      }
+    //         _transformControlTx.visible = false;
 
-      // 如果有選擇點
-      if (_hitPoint) {
-        // 顯示轉換控制器
-        _transformControlTx.visible = true;
+    //         _transformControlTx.removeEventListener(
+    //             'change', onTxChange);
 
-        // 將轉換控制器的位置設置為選擇點的位置
-        _transformControlTx.setPosition(_hitPoint);
+    //         viewer.removeEventListener(
+    //             Autodesk.Viewing.CAMERA_CHANGE_EVENT,
+    //             onCameraChanged);
 
-        // 為轉換控制器添加變更事件監聽器
-        _transformControlTx.addEventListener("change", onTxChange);
+    //         return;
+    //     }
 
-        // 為觀看器添加攝像機變更事件監聽器
-        viewer.addEventListener(
-          Autodesk.Viewing.CAMERA_CHANGE_EVENT,
-          onCameraChanged
-        );
+    //     if(_hitPoint) {
 
-        // 遍歷所有選擇的片段
-        event.fragIdsArray.forEach(function (fragId) {
-          // 獲取每個片段的代理
-          var fragProxy = viewer.impl.getFragmentProxy(viewer.model, fragId);
+    //         _transformControlTx.visible = true;
 
-          // 獲取片段的動畫變換
-          fragProxy.getAnimTransform();
+    //         _transformControlTx.setPosition(_hitPoint);
 
-          // 計算選擇點與片段位置之間的偏移量
-          var offset = {
-            x: _hitPoint.x - fragProxy.position.x,
-            y: _hitPoint.y - fragProxy.position.y,
-            z: _hitPoint.z - fragProxy.position.z,
-          };
+    //         _transformControlTx.addEventListener(
+    //             'change', onTxChange);
 
-          fragProxy.offset = offset;
+    //         viewer.addEventListener(
+    //             Autodesk.Viewing.CAMERA_CHANGE_EVENT,
+    //             onCameraChanged);
 
-          document.getElementById("x").value = fragProxy.position.x;
-          document.getElementById("y").value = fragProxy.position.y;
-          document.getElementById("z").value = fragProxy.position.z;
+    //         event.fragIdsArray.forEach(function (fragId) {
 
-          // 將片段代理儲存到_selectedFragProxyMap
-          _selectedFragProxyMap[fragId] = fragProxy;
+    //             var fragProxy = viewer.impl.getFragmentProxy(
+    //                 viewer.model,
+    //                 fragId);
 
-          // 在_modifiedFragIdMap中為此片段ID創建一個新的對象
-          _modifiedFragIdMap[fragId] = {};
-        });
+    //             fragProxy.getAnimTransform();
 
-        // 清除選擇點
-        _hitPoint = null;
-      }
-      // 如果沒有選擇點，則隱藏轉換控制器
-      else {
-        _transformControlTx.visible = false;
-      }
-    }
+    //             var offset = {
+
+    //                 x: _hitPoint.x - fragProxy.position.x,
+    //                 y: _hitPoint.y - fragProxy.position.y,
+    //                 z: _hitPoint.z - fragProxy.position.z
+    //             };
+
+    //             fragProxy.offset = offset;
+
+    //             _selectedFragProxyMap[fragId] = fragProxy;
+
+    //             _modifiedFragIdMap[fragId] = {};
+    //         });
+
+    //         _hitPoint = null;
+    //     }
+    //     else {
+
+    //         _transformControlTx.visible = false;
+    //     }
+    // }
 
     function onAggregateItemSelected(event) {
       // 初始化_selectedFragProxyMap，此地圖用於儲存選擇的片段
       _selectedFragProxyMap = {};
 
-      //取得選擇資訊
+      // 取得選擇資訊
       const selection = viewer.getAggregateSelection();
       console.log(selection);
 
-      //取得dbid
+      // 取得dbId
       var dbId = selection[0]?.selection[0];
       document.getElementById("dbid-input").value = dbId;
 
-      //檢查選擇的模型是額外添加的還是原本就有
+      // 檢查選擇的模型是額外添加的還是原本就有
       selectedMesh = MeshDictionary[dbId];
 
+      // 是額外添加到
       if (selectedMesh != null) {
+        console.log("hi");
         _transformControlTx.visible = true;
+        console.log(selectedMesh);
 
-        _transformControlTx.setPosition(_hitPoint2);
+        // 取得selectedMesh的BoundingBox中心點
+        let boundingBox = new THREE.Box3().setFromObject(selectedMesh);
+        let center = boundingBox.getCenter(new THREE.Vector3());
+
+        // 將transformControl的位置設置為此中心點
+        _transformControlTx.setPosition(center);
 
         _transformControlTx.addEventListener("change", onTxChange2);
-      } else {
-        console.log("預設模型");
-        console.log(_hitPoint2);
-
-        // 初始化_selectedFragProxyMap，此地圖用於儲存選擇的片段
-        _selectedFragProxyMap = {};
-
-        if (!event.selections[0].fragIdsArray.length) {
-          _hitPoint2 = null;
-
-          _transformControlTx.visible = false;
-
-          _transformControlTx.removeEventListener("change", onTxChange2);
-
-          viewer.removeEventListener(
-            Autodesk.Viewing.CAMERA_CHANGE_EVENT,
-            onCameraChanged
-          );
-
-          return;
-        }
-
-        if (_hitPoint2) {
-          _transformControlTx.visible = true;
-
-          _transformControlTx.setPosition(_hitPoint2);
-
-          _transformControlTx.addEventListener("change", onTxChange2);
-
-          viewer.addEventListener(
-            Autodesk.Viewing.CAMERA_CHANGE_EVENT,
-            onCameraChanged
-          );
-
-          event.selections[0].fragIdsArray.forEach(function (fragId) {
-            var fragProxy = viewer.impl.getFragmentProxy(viewer.model, fragId);
-
-            fragProxy.getAnimTransform();
-
-            var offset = {
-              x: _hitPoint2.x - fragProxy.position.x,
-              y: _hitPoint2.y - fragProxy.position.y,
-              z: _hitPoint2.z - fragProxy.position.z,
-            };
-
-            fragProxy.offset = offset;
-
-            // 將片段代理儲存到_selectedFragProxyMap
-            _selectedFragProxyMap[fragId] = fragProxy;
-
-            // 在_modifiedFragIdMap中為此片段ID創建一個新的對象
-            _modifiedFragIdMap[fragId] = {};
-
-            document.getElementById("x").value = fragProxy.offset.x;
-            document.getElementById("y").value = fragProxy.offset.y;
-            document.getElementById("z").value = fragProxy.offset.z;
-          });
-        }
       }
     }
 
@@ -292,7 +214,7 @@ Autodesk.ADN.Viewing.Extension.TransformTool = function (viewer, options) {
       var n = normalize(screenPoint);
 
       var hitPoint = viewer.utilities.getHitPoint(n.x, n.y);
-      console.log(hitPoint);
+      //console.log(hitPoint);
       _hitPoint2 = hitPoint;
       return hitPoint;
     }
@@ -350,14 +272,14 @@ Autodesk.ADN.Viewing.Extension.TransformTool = function (viewer, options) {
       _transformControlTx.attach(_transformMesh);
 
       viewer.addEventListener(
-        Autodesk.Viewing.SELECTION_CHANGED_EVENT,
-        onItemSelected
-      );
-
-      viewer.addEventListener(
         Autodesk.Viewing.AGGREGATE_SELECTION_CHANGED_EVENT,
         onAggregateItemSelected
       );
+
+      // viewer.addEventListener(
+      //   Autodesk.Viewing.SELECTION_CHANGED_EVENT,
+      //   onItemSelected
+      // );
     };
 
     this.deactivate = function () {

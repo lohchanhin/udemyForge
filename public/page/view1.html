@@ -47,6 +47,18 @@
         margin-bottom: 10px;  /* 每个标签之间的间隔 */
     }
 
+    .button-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;  /* 確保按鈕出現在其他界面元素之上 */
+    }
+
+    .button-container button {
+        margin-bottom: 10px;
+        padding: 10px;
+        cursor: pointer;
+    }
 
   </style>
 
@@ -107,7 +119,7 @@
       </div>
     </div>
     
-</div>
+
 
 
       
@@ -115,7 +127,11 @@
       <div id="floors"></div>
     </div>
 
-
+    <div class="button-container">
+      <button id="uploadDataBtn">上傳額外模型數據</button>
+      <button id="downloadDataBtn">下載額外模型數據</button>
+  </div>
+  
   
   <!-- Developer JS -->
     <script src="../js/view02/setup.js"></script>
@@ -123,6 +139,7 @@
     <script src="../js/view02/addModel.js"></script>
     <script src="../js/view02/addIcon.js"></script>
     <script src="../js/view02/dropdownLogic.js"></script>
+    <script src="../js//view02/saveLoadModel.js"></script>
     <script src="../js/newView1.js"></script>
 </body>
 

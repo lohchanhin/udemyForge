@@ -14,9 +14,15 @@ let sceneBuilder; //外掛
 let MeshDictionary = {}; //字典
 let generatedNumbers = new Set(); //dbid是否相同
 
+
 //面板數值
 let panelValues = {};
 let modelPositions = {};
+
+//Api處理
+let targetExternalId;
+let externalIdDictionary = {};
+let tagDictionary = {};
 
 // 配置 Autodesk viewer 的选项
 var options = {
@@ -43,6 +49,11 @@ button.addEventListener("click", LoadSceneBuilder);
 // //添加標籤
 const button2 = document.getElementById("add-icon-button");
 button2.addEventListener("click", addIcon);
+
+
+document.getElementById("uploadDataBtn").addEventListener("click", uploadModelData);
+document.getElementById("downloadDataBtn").addEventListener("click", downloadModelData);
+
 
 
 dropdownMain();

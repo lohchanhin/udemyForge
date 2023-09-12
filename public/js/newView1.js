@@ -23,6 +23,7 @@ let modelPositions = {};
 let targetExternalId;
 let externalIdDictionary = {};
 let tagDictionary = {};
+let deviceIdDictionary = {};
 
 // 配置 Autodesk viewer 的选项
 var options = {
@@ -44,7 +45,7 @@ start();
 
 //添加模型
 const button = document.getElementById("add-geom");
-button.addEventListener("click", LoadSceneBuilder);
+button.addEventListener("click",LoadSceneBuilder);
 
 // //添加標籤
 const button2 = document.getElementById("add-icon-button");
@@ -53,7 +54,7 @@ button2.addEventListener("click", addIcon);
 
 document.getElementById("uploadDataBtn").addEventListener("click", uploadModelData);
 document.getElementById("downloadDataBtn").addEventListener("click", downloadModelData);
-
+document.getElementById("UpdateDataBtn").addEventListener("click",updateModelData)
 
 
 dropdownMain();

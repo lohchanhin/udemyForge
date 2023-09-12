@@ -32,6 +32,48 @@ async function addIcon() {
   await loadExtensions(icon, viewer);
 }
 
+async function addIcon2(device) {
+  // 從 device 中直接讀取 dbid 和 tag
+  const dbid = device.dbId;
+  const label = device.tag;
+
+  //載入全局變數
+  var icon = icons2;
+
+  icon.push({
+    dbId: dbid,
+    label: label,
+    css: "fas fa-thumb-tack",
+  })
+
+  tagDictionary[dbid] = label;
+  // // 檢查 icons 陣列是否已經包含該 dbid，如果有，則進行更新
+  // let existingIcon = icon.find((icon) => icon.dbId === dbid);
+  // if (existingIcon) {
+  //   existingIcon.label = label;
+  //   // 檢查是否為額外模型的dbid
+  //   if (MeshDictionary[dbid]) {
+  //     tagDictionary[dbid] = label;
+  //   }
+  // } else {
+  //   icon.push({
+  //     dbId: dbid,
+  //     label: label,
+  //     css: "fas fa-thumb-tack",
+  //   });
+  //   // 如果是額外模型的dbid
+  //   if (MeshDictionary[dbid]) {
+  //     tagDictionary[dbid] = label;
+  //   }
+  // }
+
+  // 載入插件
+  console.log(icon, viewer);
+  icons2 = icon;
+  await loadExtensions(icon, viewer);
+}
+
+
 async function addIconForDownloadedModel(modelDataList) {
   // 載入全局變數
   var icon = icons2;

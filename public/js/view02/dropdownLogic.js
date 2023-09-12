@@ -119,7 +119,7 @@ function dropdownMain(){
 
             const building = data[0].building;
             const floors = data[0].floors;
-
+            console.log(floors)
             // 为每一层楼发送POST请求
             return Promise.all(floors.map(async floor => {
                 const postData = {
@@ -173,25 +173,45 @@ function dropdownMain(){
             
                 const deviceData = await response.json();
                 console.log(deviceData)
-                deviceList = deviceData; // Update deviceList with the fetched data
-                // 从这里开始是新的部分，用于生成标签并将它们添加到deviceLabels div。
+                deviceList = deviceData; 
                 const deviceLabelsDiv = document.getElementById('deviceLabels');
-                deviceLabelsDiv.innerHTML = ''; // 先清空现有标签
+                deviceLabelsDiv.innerHTML = ''; 
             
                 deviceList.forEach(device => {
                     const deviceCard = document.createElement('div');
-                    deviceCard.classList.add('device-card'); // 为容器添加类，以便稍后应用样式
-                
+                    deviceCard.classList.add('device-card');
+            
                     for (const key in device) {
                         const label = document.createElement('label');
                         label.textContent = `${key}: ${device[key]}`;
                         deviceCard.appendChild(label);
-                        deviceCard.appendChild(document.createElement('br')); // 在标签之间添加换行
+            
+                        // 如果键是 "extendedId"，则在标签旁边添加一个按钮
+                        if (key === "extendedId") {
+                            const button = document.createElement('button');
+                            button.textContent = "新增按鈕"; // 设置按钮文本
+                            button.onclick = () => {
+                                // TODO: 在这里添加您的按钮函数
+                                const positions = device.position.split(",").map(parseFloat); 
+                                const [x, y, z] = positions;
+                                console.log(x,y,z);
+                                const {dbId,tag,position,extendedId,deviceId} = device;
+                                deviceIdDictionary[dbId] = deviceId;
+                                LoadSceneBuilder3(dbId,x,y,z,extendedId);
+                                addIcon2(device)
+                                console.log(`Button clicked for extendedId: ${device[key]}`);
+
+                            }
+                            deviceCard.appendChild(button);
+                        }
+            
+                        deviceCard.appendChild(document.createElement('br'));
                     }
-                
+            
                     deviceLabelsDiv.appendChild(deviceCard);
                 });
-              })
+            });
+            
         })
         .catch(error => {
             console.error("请求失败:", error);

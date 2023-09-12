@@ -12,13 +12,72 @@ async function uploadModelData() {
 
     let uploadData = {
       // deviceId: externalIdDictionary[dbId] || "",
-      deviceId: "28ef4e1d-e9a1-4766-bbcf-d8f3e9480815",
+      // deviceId: "28ef4e1d-e9a1-4766-bbcf-d8f3e9480815",
       dbId: dbId.toString(), // 將 dbId 轉為字符串
       tag: tagDictionary[dbId] || "",
       position: formattedPosition, // 使用格式化的位置字符串
+      deviceId:deviceIdDictionary[dbId],
+      extendedId:externalIdDictionary[dbId],
     };
 
-    console.log(externalIdDictionary);
+    //console.log(externalIdDictionary);
+    console.log(uploadData);
+    try {
+      // 使用 fetch 進行上傳
+      let response = await fetch(API_URL, {
+        method: "POST",
+        headers: HEADERS,
+        body: JSON.stringify(uploadData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      } else {
+        // Check if the response is JSON
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          let responseData = await response.json();
+          console.log(
+            `Data uploaded successfully for dbId ${dbId}. Response:`,
+            responseData
+          );
+        } else {
+          console.log(
+            `Data uploaded successfully for dbId ${dbId}. Response:`,
+            await response.text()
+          );
+        }
+      }
+    } catch (error) {
+      console.error(`Failed to upload data for dbId ${dbId}. Error:`, error);
+    }
+  }
+}
+
+async function updateModelData(){
+    // 定義 API 相關的參數
+    const API_URL =
+    "https://asia-northeast1-dynamicewofe.cloudfunctions.net/wofebimapi/updateDeviceByDbId?gId=eto3PQkxP9pHxJvL58qT&&wId=b4bXKGcoFttuBhAsI0Ce";
+  const HEADERS = {
+    "content-type": "application/json",
+  };
+
+  for (let dbId in MeshDictionary) {
+    let positionObj = MeshDictionary[dbId].position;
+    let formattedPosition = `${parseFloat(positionObj.x).toFixed(2)},${parseFloat(positionObj.y).toFixed(2)},${parseFloat(positionObj.z).toFixed(2)}`;
+
+
+    let uploadData = {
+      // deviceId: externalIdDictionary[dbId] || "",
+      // deviceId: "28ef4e1d-e9a1-4766-bbcf-d8f3e9480815",
+      dbId: dbId.toString(), // 將 dbId 轉為字符串
+      tag: tagDictionary[dbId] || "",
+      position: formattedPosition, // 使用格式化的位置字符串
+      //deviceId:deviceIdDictionary[dbId],
+      extendedId:externalIdDictionary[dbId],
+    };
+
+    //console.log(externalIdDictionary);
     console.log(uploadData);
     try {
       // 使用 fetch 進行上傳

@@ -53,7 +53,7 @@ async function startViewer() {
             setTimeout(function() {
                 viewer.select(dbId);
                 viewer.fitToView([dbId]);
-            }, 1000);
+            }, 5000);
         });
     }
 }

@@ -49,6 +49,7 @@ Autodesk.ADN.Viewing.Extension.TransformTool = function (viewer, options) {
     //     viewer.impl.sceneUpdated(true);
     // }
 
+    // 移動額外模型
     function onTxChange2() {
       if (selectedMesh != null) {
         selectedMesh.position.set(
